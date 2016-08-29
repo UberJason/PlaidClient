@@ -556,11 +556,7 @@ extension Request: CustomDebugStringConvertible {
             components.append("-d \"\(escapedBody)\"")
         }
 
-    #if swift(>=2.3)
-        components.append("\"\(URL.absoluteString!)\"")
-    #else
         components.append("\"\(URL.absoluteString)\"")
-    #endif
 
         return components.joinWithSeparator(" \\\n\t")
     }

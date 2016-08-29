@@ -181,21 +181,13 @@ public enum ServerTrustPolicy {
         switch self {
         case let .PerformDefaultEvaluation(validateHost):
             let policy = SecPolicyCreateSSL(true, validateHost ? host as CFString : nil)
-            #if swift(>=2.3)
-                SecTrustSetPolicies(serverTrust, policy)
-            #else
-                SecTrustSetPolicies(serverTrust, [policy])
-            #endif
+            SecTrustSetPolicies(serverTrust, [policy])
 
             serverTrustIsValid = trustIsValid(serverTrust)
         case let .PinCertificates(pinnedCertificates, validateCertificateChain, validateHost):
             if validateCertificateChain {
                 let policy = SecPolicyCreateSSL(true, validateHost ? host as CFString : nil)
-            #if swift(>=2.3)
-                SecTrustSetPolicies(serverTrust, policy)
-            #else
                 SecTrustSetPolicies(serverTrust, [policy])
-            #endif
 
                 SecTrustSetAnchorCertificates(serverTrust, pinnedCertificates)
                 SecTrustSetAnchorCertificatesOnly(serverTrust, true)
@@ -219,11 +211,7 @@ public enum ServerTrustPolicy {
 
             if validateCertificateChain {
                 let policy = SecPolicyCreateSSL(true, validateHost ? host as CFString : nil)
-            #if swift(>=2.3)
-                SecTrustSetPolicies(serverTrust, policy)
-            #else
                 SecTrustSetPolicies(serverTrust, [policy])
-            #endif
 
                 certificateChainEvaluationPassed = trustIsValid(serverTrust)
             }
@@ -251,23 +239,13 @@ public enum ServerTrustPolicy {
 
     private func trustIsValid(trust: SecTrust) -> Bool {
         var isValid = false
-    #if swift(>=2.3)
-        var result = SecTrustResultType(rawValue: SecTrustResultType.Invalid.rawValue)
-        let status = SecTrustEvaluate(trust, &result!)
-    #else
+
         var result = SecTrustResultType(kSecTrustResultInvalid)
         let status = SecTrustEvaluate(trust, &result)
-    #endif
 
         if status == errSecSuccess {
-        #if swift(>=2.3)
-            let unspecified = SecTrustResultType(rawValue: SecTrustResultType.Unspecified.rawValue)
-            let proceed = SecTrustResultType(rawValue: SecTrustResultType.Proceed.rawValue)
-        #else
             let unspecified = SecTrustResultType(kSecTrustResultUnspecified)
             let proceed = SecTrustResultType(kSecTrustResultProceed)
-        #endif
-
 
             isValid = result == unspecified || result == proceed
         }
