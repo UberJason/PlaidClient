@@ -5,13 +5,13 @@ podspec
 
 target 'PlaidClient' do
 
-# pod 'Alamofire', '~> 3.4’
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift2.3'
 
 end
 
 target 'PlaidClientTests' do
 
-# pod 'Alamofire', '~> 3.4’
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift2.3'
 
 end
 

@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
 
 
   s.frameworks = 'UIKit'
-  s.dependency 'Alamofire', '~> 3.4'
+#  s.dependency 'Alamofire', '~> 3.4'
 
 end
